@@ -25,6 +25,7 @@ class App {
       const response = await fetch(
         `https://geocode.xyz/${lat},${lng}?geoit=json`
       );
+      console.log(response);
       const data = await response.json();
       this.setCountry(data.prov);
     } catch (err) {
@@ -38,7 +39,7 @@ class App {
     this.fetchData(`https://restcountries.com/v3.1/alpha?codes=${country}`)
       .then(this._renderMarkup.bind(this, false))
       .then(() => {
-        const neighbour = this.#data.borders[0];
+        const neighbour = this.#data.borders?.[0];
         if (!neighbour)
           throw new Error("This country hasn't got any neighbours");
         return this.fetchData(
@@ -88,17 +89,17 @@ class App {
     );
   }
 }
-// const app = new App();
+const app = new App();
 
-const wait = function (s) {
-  return new Promise((_, reject) => {
-    setTimeout(() => reject(`request too long, exceeds: ${s} s`), s * 1000);
-  });
-};
-// Promise.[all, race, any, allSettled]
-const promise = Promise.race([
-  fetch(`https://restcountries.com/v3.1/name/china`),
-  wait(1),
-]);
+// const wait = function (s) {
+//   return new Promise((_, reject) => {
+//     setTimeout(() => reject(`request too long, exceeds: ${s} s`), s * 1000);
+//   });
+// };
+// // Promise.[all, race, any, allSettled]
+// const promise = Promise.race([
+//   fetch(`https://restcountries.com/v3.1/name/china`),
+//   wait(10),
+// ]);
 
-promise.then(res => console.log(res)).catch(err => console.log(err));
+// promise.then(res => console.log(res)).catch(err => console.log(err));
